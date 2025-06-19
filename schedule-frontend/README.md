@@ -1,12 +1,38 @@
-# React + Vite
+# Schedule Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Клиентска уеб апликация за визуализация и управление на седмично учебно разписание.
 
-Currently, two official plugins are available:
+Проектът е разработен с React и използва фиксирани учебни часови интервали, визуализирани в таблична мрежа. Поддържат се различни продължителности на занятията, четни/нечетни седмици и адаптивен дизайн.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Технологии
 
-## Expanding the ESLint configuration
+- React + Vite
+- TypeScript
+- Tailwind CSS
+- React Router
+- Axios
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ▶️ Стартиране на проекта
+
+```bash
+npm install
+npm run dev
+
+По подразбиране приложението се отваря на:
+👉 http://localhost:5173
+
+📌 Функционалности
+Вход и регистрация
+
+Визуализация на учебни разписания
+
+Поддръжка на занятия с различна дължина
+
+Четни и нечетни седмици
+
+Адаптивен интерфейс за различни устройства
+
+👤 Автор
+Лиляна Иванова
+Проектът е реализиран като част от дипломна работа по специалност Информатика и софтуерни науки.
+```
