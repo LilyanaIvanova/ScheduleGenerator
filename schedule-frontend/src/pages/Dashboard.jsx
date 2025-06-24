@@ -2,7 +2,7 @@ import { useState } from "react";
 import Toolbar from "../components/Toolbar";
 import ScheduleGrid from "../components/ScheduleGrid";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 
 export default function Dashboard() {
   const [semester, setSemester] = useState(1);
@@ -39,7 +39,6 @@ export default function Dashboard() {
 
       const data = await response.json();
 
-      // 🔄 Трансформиране към очаквания от ScheduleGrid формат
       const formatted = [];
 
       data.forEach((entry) => {
@@ -67,7 +66,7 @@ export default function Dashboard() {
 
       setScheduleData(formatted);
     } catch (err) {
-      alert("⚠️ Възникна грешка при генериране или извличане.");
+      alert("⚠️ Не сте с роля админ!");
       console.error(err);
     }
   };
@@ -80,18 +79,38 @@ export default function Dashboard() {
     }
 
     try {
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({
-        orientation: "landscape",
-        unit: "px",
-        format: [canvas.width, canvas.height],
+      element.setAttribute(
+        "style",
+        `
+      color: black !important;
+      background-color: white !important;
+      font-family: sans-serif !important;
+    `
+      );
+
+      const canvas = await html2canvas(element, {
+        scale: 3,
+        useCORS: true,
+        backgroundColor: "#ffffff",
       });
-      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+
+      const imgData = canvas.toDataURL("image/png");
+
+      const pxToMm = (px) => px * 0.264583;
+      const pdfWidth = pxToMm(canvas.width);
+      const pdfHeight = pxToMm(canvas.height);
+
+      const pdf = new jsPDF({
+        orientation: pdfWidth > pdfHeight ? "landscape" : "portrait",
+        unit: "mm",
+        format: [pdfWidth, pdfHeight],
+      });
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save(`schedule-semester-${semester}.pdf`);
     } catch (err) {
-      console.error("PDF Export Error:", err);
-      alert("⚠️ Възникна грешка при експортирането.");
+      console.error("❌ PDF Export Error:", err);
+      alert("⚠️ Възникна грешка при експортиране.");
     }
   };
 

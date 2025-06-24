@@ -16,30 +16,20 @@ export default function Register() {
       body: JSON.stringify(form),
     });
 
-    let data;
+    let responseText;
     try {
-      data = await res.json();
+      responseText = await res.text();
     } catch (err) {
-      console.error("Грешка при парсване на отговора:", err);
+      console.error("Грешка при четене на отговора:", err);
+      setMessage("❌ Грешка при обработка на отговора от сървъра.");
       return;
     }
 
-    if (res.ok && data.token) {
-      localStorage.setItem("token", data.token);
-
-      try {
-        const payload = JSON.parse(atob(data.token.split(".")[1]));
-        const role =
-          payload.role || payload["authorities"]?.[0]?.authority || "user";
-        localStorage.setItem("role", role);
-      } catch (e) {
-        console.error("Проблем с декодирането на токена:", e);
-      }
-
-      setMessage("✅ Успешна регистрация!");
-      setTimeout(() => navigate("/dashboard"), 1000);
+    if (res.ok) {
+      setMessage("✅ " + responseText);
+      setTimeout(() => navigate("/"), 1500);
     } else {
-      setMessage(data.message || "❌ Възникна грешка при регистрация.");
+      setMessage("❌ " + responseText);
     }
   };
 
