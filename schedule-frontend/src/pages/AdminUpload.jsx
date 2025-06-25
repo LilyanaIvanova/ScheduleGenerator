@@ -33,6 +33,8 @@ export default function AdminUpload() {
       return;
     }
 
+    const token = localStorage.getItem("token"); // или sessionStorage.getItem("token");
+
     try {
       const formData1 = new FormData();
       formData1.append("file", mainFile);
@@ -40,6 +42,9 @@ export default function AdminUpload() {
         "http://localhost:8080/api/import/excel-import",
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           body: formData1,
         }
       );
@@ -50,6 +55,9 @@ export default function AdminUpload() {
         "http://localhost:8080/api/import/excel-RoomImport",
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           body: formData2,
         }
       );
