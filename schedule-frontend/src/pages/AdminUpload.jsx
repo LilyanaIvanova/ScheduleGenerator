@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { UploadCloud, CheckCircle, XCircle } from "lucide-react";
 
 export default function AdminUpload() {
@@ -10,6 +11,15 @@ export default function AdminUpload() {
 
   const mainRef = useRef(null);
   const roomsRef = useRef(null);
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
 
   const handleMainFile = (e) => {
     const file = e.target.files[0];
@@ -33,8 +43,6 @@ export default function AdminUpload() {
       return;
     }
 
-    const token = localStorage.getItem("token"); // или sessionStorage.getItem("token");
-
     try {
       const formData1 = new FormData();
       formData1.append("file", mainFile);
@@ -42,10 +50,10 @@ export default function AdminUpload() {
         "http://localhost:8080/api/import/excel-import",
         {
           method: "POST",
+          body: formData1,
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: formData1,
         }
       );
 
@@ -55,10 +63,10 @@ export default function AdminUpload() {
         "http://localhost:8080/api/import/excel-RoomImport",
         {
           method: "POST",
+          body: formData2,
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: formData2,
         }
       );
 
