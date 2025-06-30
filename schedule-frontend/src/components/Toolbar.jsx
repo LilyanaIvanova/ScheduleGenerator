@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminUpload from "../pages/AdminUpload";
 
 export default function Toolbar({
@@ -11,6 +12,8 @@ export default function Toolbar({
 }) {
   const [showUpload, setShowUpload] = useState(false);
   const role = localStorage.getItem("role");
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   const winterSemesters = [1, 3, 5, 7];
   const summerSemesters = [2, 4, 6, 8];
@@ -21,6 +24,12 @@ export default function Toolbar({
   useEffect(() => {
     setSemester(availableSemesters[0]);
   }, [season]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/");
+  };
 
   return (
     <>
@@ -71,6 +80,15 @@ export default function Toolbar({
               className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition"
             >
               Качване на данни
+            </button>
+          )}
+
+          {token && (
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+            >
+              Изход
             </button>
           )}
         </div>
